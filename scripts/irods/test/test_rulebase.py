@@ -73,6 +73,25 @@ OUTPUT ruleExecOut
 
         assert( not file_contents.endswith('\0') )
 
+    def test_irods_re_infinite_recursion_3169(self):
+        rules_to_prepend = """
+call_with_wrong_number_of_string_arguments(*A, *B, *C) {
+}
+
+acPostProcForPut {
+  call_with_wrong_number_of_string_arguments("a", "b");
+}
+"""
+        corefile = os.path.join(IrodsConfig().core_re_directory, 'core.re')
+        with lib.file_backed_up(corefile):
+            time.sleep(2) # remove once file hash fix is commited #2279
+            lib.prepend_string_to_file(rules_to_prepend, corefile)
+            time.sleep(2) # remove once file hash fix is commited #2279
+
+            test_file = 'rulebasetestfile'
+            lib.touch(test_file)
+            self.admin.assert_icommand(['iput', test_file])
+
     def test_acPostProcForPut_replicate_to_multiple_resources(self):
         # create new resources
         hostname = socket.gethostname()
@@ -160,13 +179,13 @@ OUTPUT ruleExecOut
         rule_file = 'my_rule.r'
         with open(rule_file, 'wt') as f:
             print(my_rule, file=f, end='')
-        
+
         server_config_filename = irods_config.server_config_path
 
         # load server_config.json to inject a new rule base
         with open(server_config_filename) as f:
             svr_cfg = json.load(f)
- 
+
         # inject a new rule base into the native rule engine
         svr_cfg['rule_engines'][1]['plugin_specific_configuration']['re_rulebase_set'] = [{"filename": "test"}, {"filename": "core"}]
 
@@ -179,7 +198,7 @@ OUTPUT ruleExecOut
             with open(test_re, 'wt') as f:
                 print('do_some_stuff() { writeLine( "serverLog", "TEST_STRING_TO_FIND_1_2585" ); }', file=f, end='')
 
-            # repave the existing server_config.json 
+            # repave the existing server_config.json
             with open(server_config_filename, 'w') as f:
                 f.write(new_server_config)
 
@@ -218,13 +237,13 @@ OUTPUT ruleExecOut
         rule_file = 'my_rule.r'
         with open(rule_file, 'wt') as f:
             print(my_rule, file=f, end='')
-        
+
         server_config_filename = irods_config.server_config_path
 
         # load server_config.json to inject a new rule base
         with open(server_config_filename) as f:
             svr_cfg = json.load(f)
- 
+
         # inject a new rule base into the native rule engine
         svr_cfg['rule_engines'][1]['plugin_specific_configuration']['re_rulebase_set'] = [{"filename": "test"}, {"filename": "core"}]
 
@@ -237,7 +256,7 @@ OUTPUT ruleExecOut
             with open(test_re, 'wt') as f:
                 print('do_some_stuff() { writeLine( "serverLog", "TEST_STRING_TO_FIND_1_NODELAY" ); }', file=f, end='')
 
-            # repave the existing server_config.json 
+            # repave the existing server_config.json
             with open(server_config_filename, 'w') as f:
                 f.write(new_server_config)
 
@@ -245,7 +264,7 @@ OUTPUT ruleExecOut
             initial_log_size = lib.get_file_size_by_path(irods_config.server_log_path)
             self.admin.assert_icommand('irule -F ' + rule_file)
             assert lib.count_occurrences_of_string_in_log(irods_config.server_log_path, 'TEST_STRING_TO_FIND_1_NODELAY', start_index=initial_log_size)
-            
+
             time.sleep(5) # ensure modify time is sufficiently different
 
             # repave rule with new string
@@ -402,7 +421,7 @@ OUTPUT ruleExecOut
         # load server_config.json to inject a new rule base
         with open(server_config_filename) as f:
             svr_cfg = json.load(f)
- 
+
         # inject a new rule base into the native rule engine
         svr_cfg['rule_engines'][1]['plugin_specific_configuration']['re_rulebase_set'] = [{"filename": "test"}, {"filename": "core"}]
 
