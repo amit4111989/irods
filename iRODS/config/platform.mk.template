@@ -205,11 +205,9 @@ endif
 # added by Ilari Korhonen and Niclas Jareborg (for OSX 10.11+)
 CCFLAGS+=-I/usr/local/opt/openssl/include
 MY_CFLAG+=-I/usr/local/opt/openssl/include
-LDADD+=-L/usr/local/opt/openssl/lib
-CL_LDADD+=-L/usr/local/opt/openssl/lib
 
-LDADD+=-lssl -lcrypto
-CL_LDADD+=-lssl -lcrypto
+LDADD+=-Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a
+CL_LDADD+=-Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a
 
 ifdef PAM_AUTH_CHECK_PROG
 MY_CFLAG+= -DPAM_AUTH_CHECK_PROG=\"$(PAM_AUTH_CHECK_PROG)\"

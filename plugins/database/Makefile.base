@@ -81,12 +81,12 @@ $(DB_PLUGIN_OBJ_WITH_NO_RE): $(DB_PLUGIN_SRC)
 
 $(SODIR)/test_cll: $(OBJDIR)/test_cll.o $(CLL_OBJS) $(LIBRARY) $(BOOST_LIBS)
 	@echo "Link server test `basename $@`..."
-	$(V_at)$(LDR) -o $@ $^ $(LIBRARY) $(LIB_CLIENT_EXEC) $(LDFLAGS) $(BOOST_LIBS) $(DBMS_LIB) $(LDRFLAGS) $(EXTRA_LDRFLAGS) -fPIC -rdynamic -ldl -lpthread -lssl -lcrypto
+	$(V_at)$(LDR) -o $@ $^ $(LIBRARY) $(LIB_CLIENT_EXEC) $(LDFLAGS) $(BOOST_LIBS) $(DBMS_LIB) $(LDRFLAGS) $(EXTRA_LDRFLAGS) -fPIC -rdynamic -ldl -lpthread -Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a
 
 $(SODIR)/test_genq: $(OBJDIR)/test_genq.o  $(DB_PLUGIN_OBJ_WITH_NO_RE) $(CLL_OBJS) $(GENQ_OBJS) $(CHL_OBJS) $(LIBRARY) $(BOOST_LIBS)
 	@echo "Link server test `basename $@`..."
-	$(V_at)$(LDR) -o $@ $^ $(LIBRARY) $(LIB_CLIENT_EXEC) $(LDFLAGS) $(DBMS_LIB) $(LDRFLAGS) $(EXTRA_LDRFLAGS) -fPIC -rdynamic -ldl -lpthread -lssl -lcrypto
+	$(V_at)$(LDR) -o $@ $^ $(LIBRARY) $(LIB_CLIENT_EXEC) $(LDFLAGS) $(DBMS_LIB) $(LDRFLAGS) $(EXTRA_LDRFLAGS) -fPIC -rdynamic -ldl -lpthread -Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a
 
 $(SODIR)/test_genu: $(OBJDIR)/test_genu.o $(GENU_OBJS) $(CHL_OBJS) $(CLL_OBJS) $(DB_PLUGIN_OBJ_WITH_NO_RE) $(LIBRARY) $(BOOST_LIBS)
 	@echo "Link server test `basename $@`..."
-	$(V_at)$(LDR) -o $@ $^ $(LIBRARY) $(LIB_CLIENT_EXEC) $(LDFLAGS) $(DBMS_LIB) $(LDRFLAGS) $(EXTRA_LDRFLAGS) -fPIC -rdynamic -ldl -lpthread -lssl -lcrypto
+	$(V_at)$(LDR) -o $@ $^ $(LIBRARY) $(LIB_CLIENT_EXEC) $(LDFLAGS) $(DBMS_LIB) $(LDRFLAGS) $(EXTRA_LDRFLAGS) -fPIC -rdynamic -ldl -lpthread -Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a

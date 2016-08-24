@@ -7,6 +7,6 @@ BOOST_LIBS = $(BOOST_DIR)/stage/lib/libboost_system.a \
              $(BOOST_DIR)/stage/lib/libboost_filesystem.a \
              $(BOOST_DIR)/stage/lib/libboost_regex.a \
              $(BOOST_DIR)/stage/lib/libboost_thread.a
-LIB=-lssl -lcrypto -ldl -lpthread $(TOPDIR)/iRODS/lib/core/obj/libRodsAPIs.a $(BOOST_LIBS)
+LIB=-Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a -ldl -lpthread $(TOPDIR)/iRODS/lib/core/obj/libRodsAPIs.a $(BOOST_LIBS)
 all:
 	${GCC} -g ${INC} -o hasher_test HasherTest.cpp ${LIB}

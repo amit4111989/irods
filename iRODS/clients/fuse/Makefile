@@ -112,7 +112,7 @@ BOOST_LIBS = $(BOOST_DIR)/stage/lib/libboost_system.a \
              $(BOOST_DIR)/stage/lib/libboost_chrono.a
 
 ifdef USE_SSL
-LDFLAGS        += -lssl -lcrypto
+LDFLAGS        += -Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a
 endif
 
 CFLAGS:=$(filter-out -DUSE_BOOST,$(CFLAGS))
@@ -145,7 +145,7 @@ $(reObjDir)/%.o:	$(reSrcDir)/%.c $(LIBRARY)
 
 $(binDir)/%:	$(objDir)/%.o $(LIB_OBJS)
 	@echo "Link fuse `basename $@`..."
-	$(V_at)$(LDR) -o $@ $< $(LIB_OBJS) $(SVR_OBJS) $(LDFLAGS) $(BOOST_LIBS) $(LDRTFLAGS) -lcrypto -lssl
+	$(V_at)$(LDR) -o $@ $< $(LIB_OBJS) $(SVR_OBJS) $(LDFLAGS) $(BOOST_LIBS) $(LDRTFLAGS) -Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a
 
 
 

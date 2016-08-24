@@ -43,7 +43,7 @@ CFLAGS += -I../../../external/$(AVROVERSION)
 LDFLAGS += ../../../external/$(AVROVERSION)/build/libavrocpp_s.a
 
 # include miscellaneous
-LDFLAGS += -lz -lssl -lcrypto -ldl -lpthread -lm
+LDFLAGS += -lz -Wl,/usr/local/opt/openssl/lib/libcrypto.a -Wl,/usr/local/opt/openssl/lib/libssl.a -ldl -lpthread -lm
 
 # include realtime library except for macosx (already included)
 ifneq (${OS_platform}, osx_platform)
